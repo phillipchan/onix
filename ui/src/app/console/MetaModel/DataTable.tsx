@@ -5,7 +5,7 @@ import { sortable, SortByDirection, Table, TableBody, TableHeader } from "@patte
 import axios from "axios";
 
 const DataTable: React.FunctionComponent<{}> = (props) => {
-  const node = useSelector(store => store.MetaModelReducer.node);
+  const node = useSelector(store => store.MetaModelDataReducer.node);
   const [state, setState] = useState({
     columns: [
       {title: "Repositories", transforms: [sortable]},
@@ -33,24 +33,14 @@ const DataTable: React.FunctionComponent<{}> = (props) => {
   };
 
   useEffect(() => {
-    axios.get("/" + node + ".json"
-    ).then(response => {
-        setState({
-          columns: state.columns,
-          sortBy: {},
-          rows: response.data.rows
-        });
-      }
-    ).catch(error => console.error(error));
+      console.log("Hello", node);
   }, [node]);
 
   return (
-    <>
-      <Table aria-label="Sortable Table" sortBy={state.sortBy} onSort={onSort} cells={state.columns} rows={state.rows}>
-        <TableHeader/>
-        <TableBody/>
-      </Table>
-    </>
+    <Table aria-label="Sortable Table" sortBy={state.sortBy} onSort={onSort} cells={state.columns} rows={state.rows}>
+      <TableHeader/>
+      <TableBody/>
+    </Table>
   );
 };
 

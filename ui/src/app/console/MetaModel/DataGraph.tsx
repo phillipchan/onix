@@ -1,29 +1,79 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Graph } from "react-d3-graph";
 import { useDispatch } from "react-redux";
-import { ACTIONS } from "./data/metamodelDatalReducer";
 import { useParams } from "react-router";
+import { Graph } from "react-d3-graph";
 import axios from "axios";
+
+import { ACTIONS } from "./data/metamodelDatalReducer";
 
 const DataGraph: React.FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
 
-  // graph payload
-  const [data, setData] = useState({nodes: [], links: []});
+  const [graphData, setGraphData] = useState<{
+    nodes: string[];
+    links: string[];
+  }>({nodes: [], links: []});
 
-// the graph configuration, you only need to pass down properties
-// that you want to override, otherwise default ones will be used
-  const myConfig = {
-
-    nodeHighlightBehavior: true,
-    node: {
-      color: "red",
-      size: 500,
-      highlightStrokeColor: "blue"
+  const graphConfig = {
+    "automaticRearrangeAfterDropNode": false,
+    "collapsible": false,
+    "directed": true,
+    "focusAnimationDuration": 0.75,
+    "focusZoom": 1,
+    "height": 500,
+    "highlightDegree": 1,
+    "highlightOpacity": 1,
+    "linkHighlightBehavior": false,
+    "maxZoom": 8,
+    "minZoom": 0.1,
+    "nodeHighlightBehavior": true,
+    "panAndZoom": false,
+    "staticGraph": false,
+    "staticGraphWithDragAndDrop": false,
+    "width": 1000,
+    "d3": {
+      "alphaTarget": 0.05,
+      "gravity": -200,
+      "linkLength": 100,
+      "linkStrength": 1
     },
-    link: {
-      highlightColor: "lightblue"
+    "node": {
+      "color": "red",
+      "fontColor": "black",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "highlightColor": "yellow",
+      "highlightFontSize": 12,
+      "highlightFontWeight": "bold",
+      "highlightStrokeColor": "SAME",
+      "highlightStrokeWidth": "SAME",
+      "labelProperty": "name",
+      "mouseCursor": "pointer",
+      "opacity": 1,
+      "renderLabel": true,
+      "size": 300,
+      "strokeColor": "blue",
+      "strokeWidth": 1.5,
+      "svg": "",
+      "symbolType": "circle"
+    },
+    "link": {
+      "color": "grey",
+      "fontColor": "black",
+      "fontSize": 8,
+      "fontWeight": "normal",
+      "highlightColor": "#d3d3d3",
+      "highlightFontSize": 8,
+      "highlightFontWeight": "normal",
+      "labelProperty": "name",
+      "mouseCursor": "pointer",
+      "opacity": 1,
+      "renderLabel": false,
+      "semanticStrokeWidth": false,
+      "strokeWidth": 2,
+      "markerHeight": 6,
+      "markerWidth": 6
     }
   };
 
@@ -32,7 +82,8 @@ const DataGraph: React.FunctionComponent<{}> = () => {
     window.alert(`Clicked the graph background`);
   };
 
-  const onClickNode = (nodeId: string) => {
+  const onClickNode = (nodeId) => {
+    console.log("!!!!!!!!!!!", nodeId);
     dispatch({type: ACTIONS.SET_NODE, node: nodeId});
   };
 
@@ -70,39 +121,44 @@ const DataGraph: React.FunctionComponent<{}> = () => {
     ).then(response => {
         const itemTypes: any[] = [];
         response.data.itemTypes.forEach((item, idx) => {
-          itemTypes.push({id: item.key});
+          if (item.root) {
+            item.symbolType = "square";
+            item.color = "orange";
+            item.fontWeight = "bold";
+          }
+          itemTypes.push({id: item.key, ...item});
         });
 
         const linkRules: any[] = [];
         response.data.linkRules.forEach((item, idx) => {
-          const linkRule:string[] = item.key.split("->");
-          linkRules.push({source: linkRule[0], target: linkRule[1]});
+          linkRules.push({source: item.startItemTypeKey, target: item.endItemTypeKey});
         });
 
-        // @ts-ignore
-        setData({nodes: itemTypes, links: linkRules});
+        setGraphData({nodes: itemTypes, links: linkRules});
       }
     ).catch(error => console.error(error));
-  }, []);
+  }, [id]);
 
-  if (data.nodes.length > 0) {
+  if (graphData.nodes.length > 0) {
     return (
-      <Graph
-        id="metaModel" // id is mandatory, if no id is defined rd3g will throw an error
-        data={data}
-        config={myConfig}
-        onClickNode={onClickNode}
-        onDoubleClickNode={onDoubleClickNode}
-        onRightClickNode={onRightClickNode}
-        onClickGraph={onClickGraph}
-        onClickLink={onClickLink}
-        onRightClickLink={onRightClickLink}
-        onMouseOverNode={onMouseOverNode}
-        onMouseOutNode={onMouseOutNode}
-        onMouseOverLink={onMouseOverLink}
-        onMouseOutLink={onMouseOutLink}
-        onNodePositionChange={onNodePositionChange}
-      />
+      <>
+        <Graph
+          id="metaModel" // id is mandatory, if no id is defined rd3g will throw an error
+          data={graphData}
+          config={graphConfig}
+          onClickNode={onClickNode}
+          onDoubleClickNode={onDoubleClickNode}
+          onRightClickNode={onRightClickNode}
+          onClickGraph={onClickGraph}
+          onClickLink={onClickLink}
+          onRightClickLink={onRightClickLink}
+          onMouseOverNode={onMouseOverNode}
+          onMouseOutNode={onMouseOutNode}
+          onMouseOverLink={onMouseOverLink}
+          onMouseOutLink={onMouseOutLink}
+          onNodePositionChange={onNodePositionChange}
+        />
+      </>
     );
   }
 

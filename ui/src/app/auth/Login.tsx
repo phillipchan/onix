@@ -30,7 +30,7 @@ const Login: React.ComponentClass<{}> = withRouter((props) => {
       // constructs a basic authentication token (base64 encoded)
       setAuthToken(btoa(`${username}:${password}`));
 
-      // use the /user api to test if the username and password is correct
+      // Authenticate against the /user api to test if the username and password is correct
       const url = "/api/user";
       axios.get(url, {
           headers: {

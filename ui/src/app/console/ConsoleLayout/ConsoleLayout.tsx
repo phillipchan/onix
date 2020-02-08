@@ -65,7 +65,7 @@ const ConsoleLayout: React.FunctionComponent<any> = ({children, dashboardRoutes,
           </NavItem>
         ))}
         <NavItemSeparator/>
-        <NavExpandable title="Metamodels" groupId="metamodels" isActive={activeGroup === "metamodels"}>
+        <NavExpandable title="Models" groupId="metamodels" isActive={activeGroup === "metamodels"}>
           {metaModelRoutes.map((route, idx) => (
             <NavItem key={`${route.label}-${idx}`}
                      id={`${route.label}-${idx}`}

@@ -10,6 +10,9 @@ const REDUCER = (state = initialState, action) => {
   let result = state;
 
   if (action.type === ACTIONS.SET_NODE) {
+
+    console.log("+++++++++++++++Got Here", action);
+
     result = {
       ...state,
       node: action.node

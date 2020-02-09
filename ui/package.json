@@ -6,9 +6,9 @@
     "enzyme": "^3.11.0"
   },
   "dependencies": {
-    "@patternfly/react-core": "^3.77.2",
-    "@patternfly/react-icons": "^3.14.18",
-    "@patternfly/react-styles": "^3.5.7",
+    "@patternfly/react-core": "^3.134.2",
+    "@patternfly/react-icons": "^3.14.39",
+    "@patternfly/react-styles": "^3.6.26",
     "@patternfly/react-table": "^2.24.64",
     "@testing-library/dom": ">=5",
     "@testing-library/jest-dom": "^4.2.4",

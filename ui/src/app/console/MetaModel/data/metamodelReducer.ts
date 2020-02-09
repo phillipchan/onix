@@ -1,22 +1,28 @@
 const ACTIONS = {
-  SET_MODELS: "SET_MODELS"
+  SET_MODELS: "SET_MODELS",
+  SET_NODE: "SET_NODE"
 };
 
 const initialState = {
-  models: []
+  models: [],
+  node: null
 };
 
 const REDUCER = (state = initialState, action) => {
-  let result = state;
-
-  if (action.type === ACTIONS.SET_MODELS) {
-    result = {
-      ...state,
-      models: action.models
-    };
+  switch (action.type) {
+    case ACTIONS.SET_MODELS:
+      return {
+        ...state,
+        models: action.models
+      };
+    case ACTIONS.SET_NODE :
+      return {
+        ...state,
+        node: action.node
+      };
+    default:
+      return state;
   }
-
-  return result;
 };
 
-export {ACTIONS, REDUCER};
+export { ACTIONS, REDUCER };

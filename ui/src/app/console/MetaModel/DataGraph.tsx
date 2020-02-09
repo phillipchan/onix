@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import { Graph } from "react-d3-graph";
 import axios from "axios";
 
-import { ACTIONS } from "./data/metamodelDatalReducer";
+import { ACTIONS } from "./data/metamodelReducer";
 
 const DataGraph: React.FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -17,24 +17,24 @@ const DataGraph: React.FunctionComponent<{}> = () => {
 
   const graphConfig = {
     "automaticRearrangeAfterDropNode": false,
-    "collapsible": false,
+    "collapsible": true,
     "directed": true,
-    "focusAnimationDuration": 0.75,
+    "focusAnimationDuration": 0,
     "focusZoom": 1,
-    "height": 500,
+    "height": 600,
     "highlightDegree": 1,
     "highlightOpacity": 1,
     "linkHighlightBehavior": false,
     "maxZoom": 8,
-    "minZoom": 0.1,
+    "minZoom": 1,
     "nodeHighlightBehavior": true,
     "panAndZoom": false,
     "staticGraph": false,
     "staticGraphWithDragAndDrop": false,
-    "width": 1000,
+    "width": 1500,
     "d3": {
       "alphaTarget": 0.05,
-      "gravity": -200,
+      "gravity": -100,
       "linkLength": 100,
       "linkStrength": 1
     },
@@ -77,13 +77,10 @@ const DataGraph: React.FunctionComponent<{}> = () => {
     }
   };
 
-// graph event callbacks
   const onClickGraph = function () {
-    window.alert(`Clicked the graph background`);
   };
 
   const onClickNode = (nodeId) => {
-    console.log("!!!!!!!!!!!", nodeId);
     dispatch({type: ACTIONS.SET_NODE, node: nodeId});
   };
 

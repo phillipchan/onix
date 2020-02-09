@@ -5,7 +5,7 @@ import { sortable, SortByDirection, Table, TableBody, TableHeader } from "@patte
 import axios from "axios";
 
 const DataTable: React.FunctionComponent<{}> = (props) => {
-  const node = useSelector(store => store.MetaModelDataReducer.node);
+  const node = useSelector(store => store.MetaModelReducer.node);
   const [state, setState] = useState({
     columns: [
       {title: "Repositories", transforms: [sortable]},
